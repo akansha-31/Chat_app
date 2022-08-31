@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %} chat room {% endblock %}
+{% block content %}
+	<style>
+		li{
+			list-style-type: none;
+			padding-top: 15px;
+		}
+		#msg{
+			height: 550px;
+			overflow: auto;
+			}
+		img{
+			height: 30%;
+			width: 30%;
+		}
+		@media screen and (min-width: 300px) and (max-width: 599px) {
+			img {
+				height: 40%;
+				width: 40%;
+			}
+		}
+	</style>
+	<nav class=" navbar navbar-dark bg-dark">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">
+				ChatApp
+			</a>
+			<div>
+				<input type="submit" value="Open">
+			</div>
+			<div>
+				<input type="submit" value="Snooze">
+			</div>
+			<div>
+				<input type="submit" value="Close">
+			</div>
+			<div class="nav-item text-white">
+				<a href=" {{ url_for("logout") }}  " title="logout" class="btn btn-danger">Logout</a>
+			</div>
+		</div>
+	</nav>
+	
+	<div class="container-fluid w-100">
+		<ul id="msg" class="pb-2">
+			{% for message in messages %}
+				<li class="card rounded shadow my-3">
+					<div class="container-fluid">
+						<p class="fw-bold">{{message.username}} </p>
+						<p id="message-body">{{message.message}}</p>
+						<p>{{message.date}}</p>
+					</div>
+				</li>
+			{% else %}
+				<center id="none" class="mt-5">
+				<h1>No message here</h1>
+				</center>
+			{% endfor %}
+		</ul>
+		<br>
+		<br>
+		<br>
+		<br>
+	</div>
+	<div class="border-top border-right position-fixed bottom-0 start-0 mt-5" style="background-color:#ffffff;width: 96%;">
+		<div class="mt-3 mb-2">
+			
+			<label id="username" class="mx-3 pb-3" style="position: relative;bottom:15px"> {{session["username"]}} </label>
+			<textarea type="text" id="message" placeholder="your message here" class="w-50"></textarea>
+			
+			<button id="send" type="submit" class="btn btn-outline-success mb-5 ">Send</button>
+		</div>
+	</div>
+	<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>  
+	<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+	<script src="{{ url_for('static', filename='index.js') }} " type="text/babel"></script>
+{% endblock %}
