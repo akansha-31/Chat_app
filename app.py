@@ -2,13 +2,12 @@ from flask import Flask, render_template, jsonify, request, session, redirect, u
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_socketio import SocketIO, send
-
+from models import Message
 import os
 
 app = Flask(__name__)
 socketio = SocketIO(app)
 db = SQLAlchemy(app, session_options={"autoflush": False})
-migrate = Migrate(app, db)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["SECRET_KEY"] = os.urandom(128)
@@ -18,14 +17,6 @@ app.config["SQLALCHEMY_POOL_SIZE"] = 200
 app.config["SQLALCHEMY_POOL_RECYCLE"] = 100
 app.config["ENV"] = "development"
 
-
-class Message(db.Model):
-    """table model"""
-
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(24), nullable=False)
-    message = db.Column(db.String(2000), nullable=False)
-    date = db.Column(db.String(2000))
 
 @app.route("/chat_room")
 def chat_room():
